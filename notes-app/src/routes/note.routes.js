@@ -6,5 +6,6 @@ const NoteRouter = express.Router();
 NoteRouter.post("/api/notes", noteController.createNotes);
 NoteRouter.post("/api/notes/bulk", noteController.createBulkNotes);
 NoteRouter.get("/api/notes", noteController.getAllNotes);
+NoteRouter.get("/:id", noteController.getNoteById);
 
 export default NoteRouter;
