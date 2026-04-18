@@ -121,3 +121,53 @@ export async function getNoteById(req, res) {
     });
   }
 }
+
+export async function replaceNote(req, res) {
+  const { id } = req.params;
+  const { title, content, category, isPinned } = req.body;
+
+  try {
+    if (!title || !content || !category || isPinned === undefined) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields are required for full replacement",
+        data: null
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid note id",
+        data: null
+      });
+    }
+
+    const note = await Note.findByIdAndUpdate(
+      id,
+      { title, content, category, isPinned },
+      { new: true, overwrite: true, runValidators: true }
+    );
+
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+        data: null
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Note replaced successfully",
+      data: note
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null
+    });
+  }
+}
