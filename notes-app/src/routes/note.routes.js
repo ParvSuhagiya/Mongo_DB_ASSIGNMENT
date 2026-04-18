@@ -8,5 +8,6 @@ NoteRouter.post("/api/notes/bulk", noteController.createBulkNotes);
 NoteRouter.get("/api/notes", noteController.getAllNotes);
 NoteRouter.get("/api/notes/:id", noteController.getNoteById);
 NoteRouter.put("/api/notes/:id", noteController.replaceNote);
+NoteRouter.patch("/:id", noteController.updateNote);
 
 export default NoteRouter;
