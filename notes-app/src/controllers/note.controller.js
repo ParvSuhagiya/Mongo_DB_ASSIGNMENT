@@ -64,3 +64,22 @@ export async function createBulkNotes(req, res) {
     });
   }
 }
+
+export async function getAllNotes(req, res) {
+  try {
+    const notes = await Note.find();
+
+    return res.status(200).json({
+      success: true,
+      message: "Notes fetched successfully",
+      data: notes
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null
+    });
+  }
+}
