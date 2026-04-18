@@ -221,3 +221,40 @@ export async function updateNote(req, res) {
     });
   }
 }
+
+export async function deleteNote(req, res) {
+  const { id } = req.params;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid note id",
+        data: null
+      });
+    }
+
+    const note = await Note.findByIdAndDelete(id);
+
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: "Note not found",
+        data: null
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Note deleted successfully",
+      data: null
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null
+    });
+  }
+}
