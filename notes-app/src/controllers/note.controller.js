@@ -35,3 +35,32 @@ export async function createNotes(req, res) {
     });
   }
 }
+
+export async function createBulkNotes(req, res) {
+  const { notes } = req.body;
+
+  try {
+    if (!notes || !Array.isArray(notes) || notes.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "notes array is required",
+        data: null
+      });
+    }
+
+    const createdNotes = await Note.insertMany(notes);
+
+    return res.status(201).json({
+      success: true,
+      message: `${createdNotes.length} notes created successfully`,
+      data: createdNotes
+    });
+
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      message: error.message,
+      data: null
+    });
+  }
+}
